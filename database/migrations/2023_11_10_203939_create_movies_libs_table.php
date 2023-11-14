@@ -16,13 +16,14 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('name', 60);
             $table->smallInteger('age_restriction');
-            $table->integer('length_in_seconds');
+            $table->integer('length_in_minutes'); //? Maybe useless
             $table->string('file', 100);
             $table->string('file_size');
-            $table->timestamp('uploaded_at');
+            $table->timestamp('updated_at');
+            $table->timestamp('created_at');
 
             //foreign key
-            $table->foreign('user_id')->references('id')->on('users');
+            //$table->foreign('user_id')->references('id')->on('users');
         });
     }
 
