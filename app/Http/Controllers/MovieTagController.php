@@ -6,14 +6,24 @@ use App\Models\MovieTag;
 use App\Http\Requests\StoreMovieTagRequest;
 use App\Http\Requests\UpdateMovieTagRequest;
 
+
+/**
+ * @property  MovieTag $movieTags
+ */
 class MovieTagController extends Controller
 {
+
+    public function __construct(MovieTag $tags)
+    {
+        $this->movieTags = $tags;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $listAllMovieTags = $this->movieTags->all();
+        return $listAllMovieTags;
     }
 
     /**
