@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('movies_lib_has_movies_tags', function (Blueprint $table){
+        Schema::create('movies_has_tags', function (Blueprint $table){
             $table->id();
             $table->unsignedBigInteger('movies_lib_id_movies_lib');
             $table->unsignedBigInteger('movies_lib_users_id_users'); //!Nota: Talvez isso seja inútil ¯\_(ツ)_/¯
@@ -19,9 +19,9 @@ return new class extends Migration
             $table->timestamp('created_at');
 
             //Foreign Keys
-            $table->foreign('movies_lib_id_movies_lib')->references('id')->on('movies_libs');
+            $table->foreign('movies_lib_id_movies_lib')->references('id')->on('movies');
             $table->foreign('movies_lib_users_id_users')->references('id')->on('users');
-            $table->foreign('movie_tags_id_movies_tags')->references('id')->on('movie_tags');
+            $table->foreign('movie_tags_id_movies_tags')->references('id')->on('tags');
         });
     }
 
@@ -30,11 +30,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('movies_lib_has_movies_tags', function(Blueprint $table){
+        Schema::table('movies_has_tags', function(Blueprint $table){
            $table->dropForeign(['movies_lib_id_movies_lib']);
            $table->dropForeign(['movies_lib_users_id_users']);
            $table->dropForeign(['movie_tags_id_movies_tags']);
         });
-        Schema::dropIfExists('movies_lib_has_movies_tags');
+        Schema::dropIfExists('movies_has_tags');
     }
 };
