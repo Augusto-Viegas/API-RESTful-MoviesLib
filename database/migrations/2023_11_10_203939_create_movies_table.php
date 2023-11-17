@@ -19,8 +19,7 @@ return new class extends Migration
             $table->integer('length_in_minutes'); //? Maybe useless
             $table->string('file', 100);
             $table->string('file_size');
-            $table->timestamp('updated_at');
-            $table->timestamp('created_at');
+            $table->timestamps();
 
         });
     }

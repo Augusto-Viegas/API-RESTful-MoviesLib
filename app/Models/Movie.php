@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MoviesLib extends Model
+class Movie extends Model
 {
     use HasFactory;
+    //protected $table = "movies";
     protected $fillable = [
         'user_id',
         'name',
         'age_restriction',
-        'length_in_seconds',
+        'length_in_minutes',
         'file',
         'file_size',
     ];
@@ -27,9 +28,16 @@ class MoviesLib extends Model
         ];*/
     }
 
-    public function usuario()
+    public function users()
     {
-        //1 filme pertence a 1 usuário
-        //return $this->belongsTo(\App\Models\User::class);
+        //1:N
+        return $this->belongsTo(\App\Models\User::class);
+
+    }
+
+    public function tags()
+    {
+        //N:N
+        return $this->belongsToMany(Tag::class);
     }
 }

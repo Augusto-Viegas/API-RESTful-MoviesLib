@@ -13,15 +13,10 @@ return new class extends Migration
     {
         Schema::create('movies_has_tags', function (Blueprint $table){
             $table->id();
-            $table->unsignedBigInteger('movies_lib_id_movies_lib');
-            $table->unsignedBigInteger('movies_lib_users_id_users'); //!Nota: Talvez isso seja inútil ¯\_(ツ)_/¯
-            $table->unsignedBigInteger('movie_tags_id_movies_tags');
-            $table->timestamp('created_at');
-
-            //Foreign Keys
-            $table->foreign('movies_lib_id_movies_lib')->references('id')->on('movies');
-            $table->foreign('movies_lib_users_id_users')->references('id')->on('users');
-            $table->foreign('movie_tags_id_movies_tags')->references('id')->on('tags');
+            $table->foreignId('movies_lib_id_movies_lib')->constrained('movies');
+            $table->foreignId('movies_lib_users_id_users')->constrained('users');//!Nota: Talvez isso seja inútil ¯\_(ツ)_/¯
+            $table->foreignId('movie_tags_id_movies_tags')->constrained('tags');
+            $table->timestamps();
         });
     }
 

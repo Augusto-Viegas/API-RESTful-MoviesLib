@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MoviesLib;
-use App\Http\Requests\StoreMoviesLibRequest;
-use App\Http\Requests\UpdateMoviesLibRequest;
+use App\Models\Movie;
+use App\Http\Requests\StoreMoviesRequest;
+use App\Http\Requests\UpdateMoviesRequest;
 use Illuminate\Validation\Rules\In;
 use Ramsey\Uuid\Type\Integer;
 
 /**
- * @property MoviesLib $moviesLib
+ * @property Movie $movie
  */
-class MoviesLibController extends Controller
+class MovieController extends Controller
 {
 
-    public function __construct(MoviesLib $movie)
+    public function __construct(Movie $movie)
     {
-        $this->moviesLib = $movie;
+        $this->movie = $movie;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $listAllMovies = $this->moviesLib->all();
+        $listAllMovies = $this->movie->all();
         return $listAllMovies;
     }
 
@@ -38,9 +38,9 @@ class MoviesLibController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMoviesLibRequest $request)
+    public function store(StoreMoviesRequest $request)
     {
-        $storeMovie = $this->moviesLib->create($request->all());
+        $storeMovie = $this->movie->create($request->all());
         return $storeMovie;
     }
 
@@ -50,14 +50,14 @@ class MoviesLibController extends Controller
      */
     public function show($id)
     {
-        $searchMovieById = $this->moviesLib->find($id);
+        $searchMovieById = $this->movie->find($id);
         return $searchMovieById;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MoviesLib $movie)
+    public function edit(Movie $movie)
     {
         //
     }
@@ -66,9 +66,9 @@ class MoviesLibController extends Controller
      * Update the specified resource in storage.
      * @param Integer $id
      */
-    public function update(UpdateMoviesLibRequest $request, $id)
+    public function update(UpdateMoviesRequest $request, $id)
     {
-        $updateMovieInfo = $this->moviesLib->find($id);
+        $updateMovieInfo = $this->movie->find($id);
         $updateMovieInfo->update($request->all());
         return $updateMovieInfo;
     }
@@ -79,7 +79,7 @@ class MoviesLibController extends Controller
      */
     public function destroy($id)
     {
-        $deleteMovie = $this->moviesLib->find($id);
+        $deleteMovie = $this->movie->find($id);
         $deleteMovie->delete();
         return ['message' => 'O filme foi excluido com sucesso.'];
     }

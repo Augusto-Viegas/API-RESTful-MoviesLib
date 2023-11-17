@@ -6,7 +6,7 @@ use App\Models\MoviesLib;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class MoviesLibPolicy
+class MoviesPolicy
 {
     /**
      * Determine whether the user can view any models.

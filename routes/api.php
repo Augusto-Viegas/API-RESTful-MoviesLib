@@ -4,8 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 //#Controllers:
-use App\Http\Controllers\MoviesLibController;
-use App\Http\Controllers\MovieTagController;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('movies', MoviesLibController::class);
-Route::apiResource('movieTags', MovieTagController::class);
+Route::apiResource('movies', MovieController::class);
+Route::apiResource('movieTags', TagController::class);
