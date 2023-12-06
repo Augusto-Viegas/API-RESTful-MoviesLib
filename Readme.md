@@ -1,12 +1,12 @@
-#Descrição do sistema:
-1) Cadastro de usuário
-2) Autenticação
-3) Cadastro de filmes
-4) Cadastro de tags para os filmes
-5) Listagem de filmes
-6) Edição de filmes
-7) Exclusão de filmes
+This project allows you to:
+
+1) Register a user
+2) Authentication on login
+3) Can upload a movie
+4) Can create and add tags to movies 
+5) List movies
+6) Edit movies details
+7) Delete movies
 
 ----------------------------------------------------------------
-
 

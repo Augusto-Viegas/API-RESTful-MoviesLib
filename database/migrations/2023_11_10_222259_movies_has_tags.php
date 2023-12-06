@@ -11,12 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('movies_has_tags', function (Blueprint $table){
+        Schema::create('movie_tag', function (Blueprint $table){
             $table->id();
-            $table->foreignId('movies_lib_id_movies_lib')->constrained('movies');
-            $table->foreignId('movies_lib_users_id_users')->constrained('users');//!Nota: Talvez isso seja inútil ¯\_(ツ)_/¯
-            $table->foreignId('movie_tags_id_movies_tags')->constrained('tags');
-            $table->timestamps();
+
+            $table->foreignId('movie_id')
+                ->constrained('movies')
+                ->onDelete('CASCADE')
+                ->onUpdate('CASCADE');
+
+            $table->foreignId('tag_id')
+                ->constrained('tags')
+                ->onDelete('CASCADE')
+                ->onUpdate('CASCADE');
         });
     }
 
@@ -25,11 +31,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('movies_has_tags', function(Blueprint $table){
-           $table->dropForeign(['movies_lib_id_movies_lib']);
-           $table->dropForeign(['movies_lib_users_id_users']);
-           $table->dropForeign(['movie_tags_id_movies_tags']);
+        Schema::table('movie_tag', function(Blueprint $table){
+           $table->dropForeign(['movie_id']);
+           $table->dropForeign(['tag_id']);
         });
-        Schema::dropIfExists('movies_has_tags');
+        Schema::dropIfExists('movie_tag');
     }
 };

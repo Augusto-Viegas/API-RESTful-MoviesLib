@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onDelete('CASCADE')
+                ->onUpdate('cascade');
             $table->string('name', 60);
             $table->smallInteger('age_restriction');
-            $table->integer('length_in_minutes'); //? Maybe useless
+            $table->integer('duration'); //? Maybe useless
             $table->string('file', 100);
             $table->string('file_size');
             $table->timestamps();
