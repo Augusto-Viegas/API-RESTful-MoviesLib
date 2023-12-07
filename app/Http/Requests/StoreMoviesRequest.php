@@ -23,10 +23,13 @@ class StoreMoviesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:2|max:60',
-            'age_restriction' => 'required|integer|digits_between:0,18',
-            //'file' => 'required|file|extensions:mp4,avi,flv,wmv,mov,rmvb,mpeg,mkv'
-            'tag' => 'exists:tags,id'
+            'user_id' => 'required|integer',
+            'name' => 'required|string',
+            'age_restriction' => 'required|in:0,10,13,16,18',
+            'duration' => 'required|integer',
+            'file' => 'required',
+            'file_size' => 'required|integer',
+            'tag' => 'exists:tags,id',
         ];
     }
 }

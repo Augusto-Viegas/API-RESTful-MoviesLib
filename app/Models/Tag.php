@@ -14,20 +14,9 @@ class Tag extends Model
         'category'
     ];
 
-    public function rules()
-    {
-        return
-        [
-            'category' => 'required|min:4|max:18|unique:tags',
-            'tags' => 'exists:tags',
-        ];
-    }
-
-
-
     public function movie(): BelongsToMany
     {
-        //N:N
-        return $this->belongsToMany(Movie::class);
+        //N:N (N tags are in N movies)
+        return $this->belongsToMany(Movie::class, 'move_tag');
     }
 }

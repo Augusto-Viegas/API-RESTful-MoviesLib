@@ -20,16 +20,6 @@ class Movie extends Model
         'file_size',
     ];
 
-    public function rules()
-    {
-        return
-        [
-            'name' => 'required|min:2|max:60',
-            'age_restriction' => 'required|integer|digits_between:0,18',
-            //'file' => 'required|file|extensions:mp4,avi,flv,wmv,mov,rmvb,mpeg,mkv'
-        ];
-    }
-
     public function users(): BelongsTo
     {
         //N:1 (1 user has N movies)

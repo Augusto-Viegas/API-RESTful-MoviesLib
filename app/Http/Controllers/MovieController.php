@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MovieResource;
 use App\Http\Requests\StoreMoviesRequest;
 use App\Http\Requests\UpdateMoviesRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Type\Integer;
 use App\Repositories\MovieRepository;
 
@@ -21,7 +23,7 @@ class MovieController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(StoreMoviesRequest $request)
+    public function index(Request $request)
     {
         //TODO refatorar para que possa ser incluido filtros e atributos na pesquisa
         if($request->has('tags')){
@@ -47,10 +49,21 @@ class MovieController extends Controller
      */
     public function store(StoreMoviesRequest $request)
     {
-        $this->movieRepository->store($request);
-        return (new MovieResource($request))
-            ->response()
-            ->setStatusCode(201);
+        //? Armazenamento do arquivo
+        $file = $request->file('file');
+        $fileUrn = $file->store('file', 'public');
+
+        //? Verificar o tamanho do arquivo e converte para MB
+        $fileSize = round($request->file('file')->getSize() / (1024 * 1024), 2);
+
+
+        //? Adiciona o tamanho e o caminho do arquivo aos dados validados
+        $validatedData = $request->validated();
+        $validatedData['file'] = $fileUrn;
+        $validatedData['file_size'] = $fileSize;
+
+        $data = $this->movieRepository->store($validatedData);
+        return MovieResource::make($data->load(['tags']));
     }
 
     /**
