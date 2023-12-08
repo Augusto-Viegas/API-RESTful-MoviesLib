@@ -2,6 +2,8 @@
 namespace App\Repositories;
 
 use App\Models\Movie;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
 use Illuminate\Support\Facades\DB;
 
 
@@ -36,6 +38,14 @@ class MovieRepository extends AbstractRepository
     public function getAll()
     {
         return $this->model->all();
+    }
+
+    public function getVideoDuration($videoUrn): string
+    {
+        $ffmpeg = FFMpeg::create();
+        $video = $ffmpeg->open($videoUrn);
+        $duration = $video->getStreams()->videos()->first()->get('duration');
+        return gmdate('H:i:s', $duration);
     }
 }
 

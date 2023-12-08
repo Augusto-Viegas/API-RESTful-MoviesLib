@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MovieResource;
 use App\Http\Requests\StoreMoviesRequest;
 use App\Http\Requests\UpdateMoviesRequest;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Type\Integer;
@@ -25,6 +27,7 @@ class MovieController extends Controller
      */
     public function index(Request $request)
     {
+        //dd($request);
         //TODO refatorar para que possa ser incluido filtros e atributos na pesquisa
         if($request->has('tags')){
             $tagAttribute = "tags:id," . implode(',', $request->tags);
@@ -40,8 +43,8 @@ class MovieController extends Controller
         if($request->has('attributes')){
             $this->movieRepository->selectAttributes($request->attributes);
         }
-
-        return $this->movieRepository->getResults();
+        dd($this->movieRepository->getResults());
+        return MovieResource::make($this->movieRepository->getResults());
     }
 
     /**
@@ -53,14 +56,18 @@ class MovieController extends Controller
         $file = $request->file('file');
         $fileUrn = $file->store('file', 'public');
 
-        //? Verificar o tamanho do arquivo e converte para MB
-        $fileSize = round($request->file('file')->getSize() / (1024 * 1024), 2);
+        //? Verificar o tamanho do arquivo
+        $fileSize = $request->file('file')->getSize();
+
+        //? verifica a duração do video
+        $fileDuration = $this->movieRepository->getVideoDuration($file);
 
 
         //? Adiciona o tamanho e o caminho do arquivo aos dados validados
         $validatedData = $request->validated();
         $validatedData['file'] = $fileUrn;
         $validatedData['file_size'] = $fileSize;
+        $validatedData['duration'] = $fileDuration;
 
         $data = $this->movieRepository->store($validatedData);
         return MovieResource::make($data->load(['tags']));

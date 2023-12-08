@@ -19,7 +19,7 @@ return new class extends Migration
                 ->onUpdate('cascade');
             $table->string('name', 60);
             $table->smallInteger('age_restriction');
-            $table->integer('duration'); //? Maybe useless
+            $table->string('duration');
             $table->string('file', 100);
             $table->string('file_size');
             $table->timestamps();
