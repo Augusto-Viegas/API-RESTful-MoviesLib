@@ -16,12 +16,14 @@ class MovieResource extends JsonResource
     {
         //return parent::toArray($request);
         return [
+            'user_id' => $this->user_id,
+            'email' => UserResource::collection($this->whenLoaded('users')),
             'name' => $this->name,
             'age_restriction' => $this->age_restriction,
             'duration' => $this->duration,
             'file' => $this->file,
             'file_size' => $this->file_size,
-            'tag' => TagResource::collection($this->whenLoaded('tags')),
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
         ];
     }
 }

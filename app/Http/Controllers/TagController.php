@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TagResource;
 use App\Models\Tag;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
+use App\Repositories\TagRepository;
 
 
 /**
@@ -13,17 +15,19 @@ use App\Http\Requests\UpdateTagRequest;
 class TagController extends Controller
 {
 
-    public function __construct(Tag $tags)
+    private TagRepository $tagRepository;
+
+    public function __construct(TagRepository $tagRepository)
     {
-        $this->tags = $tags;
+        $this->tagRepository = $tagRepository;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $listAllMovieTags = $this->tags->all();
-        return $listAllMovieTags;
+        $teste = $this->tagRepository->nomeProvisorio();
+        return TagResource::collection($teste);
     }
 
     /**

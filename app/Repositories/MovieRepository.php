@@ -35,11 +35,6 @@ class MovieRepository extends AbstractRepository
         return $result;
     }
 
-    public function getAll()
-    {
-        return $this->model->all();
-    }
-
     public function getVideoDuration($videoUrn): string
     {
         $ffmpeg = FFMpeg::create();

@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\QueryBuilder\QueryBuilder;
 
 abstract class AbstractRepository
 {
@@ -11,34 +12,30 @@ abstract class AbstractRepository
         $this->model = $model;
     }
 
-    public function selectAttributesRelatedRegisters($attributes)
+    public function queryBuilder(array $allowedIncludes = null,
+                                   array $allowedFilters = null,
+                                   array $allowedSorts = null)
     {
-        $this->model = $this->model->with($attributes);
-    }
+        $model = $this->model;
+        $query = QueryBuilder::for($model::class);
 
-    public function searchFilter($filters)
-    {
-        $filters = explode(';', $filters);
-
-        foreach($filters as $key => $condition)
-        {
-            $c = explode(';', $condition);
-            $this->model = $this->model->where($c[0], $c[1], $c[2]);
+        if($allowedIncludes != null){
+            $query->allowedIncludes($allowedIncludes);
         }
+
+        if($allowedFilters != null){
+            $query->allowedFilters($allowedFilters);
+        }
+
+        if($allowedSorts != null){
+            $query->allowedSorts($allowedSorts);
+        }
+
+        return  $query->get();
     }
 
-    public function selectAttributes($attributes)
+    public function findResourceById($id)
     {
-        $this->model = $this->model->selectRaw($attributes);
-    }
-
-    public function getResults()
-    {
-        return $this->model->get();
-    }
-
-    public function getResultsPerPag(int $numRegPerPag)
-    {
-        return $this->model->paginate($numRegPerPag);
+        return $this->model->find($id);
     }
 }

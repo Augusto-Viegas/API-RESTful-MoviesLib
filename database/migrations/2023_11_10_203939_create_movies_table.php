@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('file', 100);
             $table->string('file_size');
             $table->timestamps();
-
         });
     }
 

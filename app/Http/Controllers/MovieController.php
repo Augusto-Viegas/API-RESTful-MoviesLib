@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MovieResource;
 use App\Http\Requests\StoreMoviesRequest;
 use App\Http\Requests\UpdateMoviesRequest;
-use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\FFMpeg;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Type\Integer;
 use App\Repositories\MovieRepository;
 
@@ -25,32 +22,20 @@ class MovieController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        //dd($request);
-        //TODO refatorar para que possa ser incluido filtros e atributos na pesquisa
-        if($request->has('tags')){
-            $tagAttribute = "tags:id," . implode(',', $request->tags);
-            $this->movieRepository->selectAttributesRelatedRegisters($tagAttribute);
-        }else {
-            $this->movieRepository->selectAttributesRelatedRegisters('tags');
-        }
-
-        if($request->has('filter')){
-            $this->movieRepository->searchFilter($request->filter);
-        }
-
-        if($request->has('attributes')){
-            $this->movieRepository->selectAttributes($request->attributes);
-        }
-        dd($this->movieRepository->getResults());
-        return MovieResource::make($this->movieRepository->getResults());
+        $getAllResources = $this->movieRepository->
+        queryBuilder(['tags'],
+            ['name','age_restriction'],
+            ['name','duration','age_restriction','file_size'],
+        );
+        return MovieResource::collection($getAllResources);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMoviesRequest $request)
+    public function store(StoreMoviesRequest $request): MovieResource
     {
         //? Armazenamento do arquivo
         $file = $request->file('file');
@@ -61,7 +46,6 @@ class MovieController extends Controller
 
         //? verifica a duração do video
         $fileDuration = $this->movieRepository->getVideoDuration($file);
-
 
         //? Adiciona o tamanho e o caminho do arquivo aos dados validados
         $validatedData = $request->validated();
@@ -77,11 +61,10 @@ class MovieController extends Controller
      * Display the specified resource.
      * @param Integer $id
      */
-    public function show($id)
+    public function show(Integer $id): MovieResource
     {
-        //TODO refatorar para que possa ser incluido filtros e atributos na pesquisa
-        $searchMovieById = $this->movie->find($id);
-        return $searchMovieById;
+        $resource = $this->movieRepository->findResourceById($id);
+        return MovieResource::make($resource->load(['tags']));
     }
 
     /**

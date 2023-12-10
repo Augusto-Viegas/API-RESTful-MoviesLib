@@ -23,7 +23,7 @@ class Movie extends Model
     public function users(): BelongsTo
     {
         //N:1 (1 user has N movies)
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
 
     }
 
