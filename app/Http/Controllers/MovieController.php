@@ -78,9 +78,10 @@ class MovieController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param Integer $id
+     * @param int $id
+     * @return array
      */
-    public function destroy($id): array
+    public function destroy(int $id): array
     {
         return $this->movieRepository->destroy($id);
     }

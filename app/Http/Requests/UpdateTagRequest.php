@@ -22,7 +22,7 @@ class UpdateTagRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'category' => 'unique:tags,category'
         ];
     }
 }

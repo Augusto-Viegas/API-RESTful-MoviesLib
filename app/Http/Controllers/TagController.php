@@ -24,69 +24,54 @@ class TagController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $teste = $this->tagRepository->nomeProvisorio();
-        return TagResource::collection($teste);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $getAllResource = $this->tagRepository->
+        queryBuilder(null,['id','category'],['id','category']);
+        return TagResource::collection($getAllResource);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTagRequest $request)
+    public function store(StoreTagRequest $request): TagResource
     {
-        $storeTag = $this->tags->create($request->all());
-        return $storeTag;
+        $validatedData = $request->validated();
+        $data = $this->tagRepository->store($validatedData);
+        return TagResource::make($data);
     }
 
     /**
      * Display the specified resource.
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return TagResource
      */
-    public function show($id)
+    public function show(int $id): TagResource
     {
-        $showTags = $this->tags->find($id);
-        return $showTags;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tag $movieTag)
-    {
-        //
+        $resource = $this->tagRepository->findResourceById($id);
+        return TagResource::make($resource);
     }
 
     /**
      * Update the specified resource in storage.
+     * @param int $id
      * @param UpdateTagRequest $request
-     * @param $id
-     * @return mixed
+     * @return TagResource
      */
-    public function update(UpdateTagRequest $request, $id)
+    public function update(int $id, UpdateTagRequest $request): TagResource
     {
-        $updateTag = $this->tags->find($id);
-        $updateTag->update($request->all());
-        return $updateTag;
+       $validatedData = $request->validated();
+       $resourceUpdate = $this->tagRepository->update($id, $validatedData);
+       return TagResource::make($resourceUpdate);
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param $id
+     * @param int $id
+     * @return array
      */
-    public function destroy($id)
+    public function destroy(int $id): array
     {
-        $deleteTag = $this->tags->find($id);
-        $deleteTag->delete();
-        return $deleteTag;
+        return $this->tagRepository->destroy($id);
     }
 }

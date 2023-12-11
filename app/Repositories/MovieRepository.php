@@ -35,7 +35,7 @@ class MovieRepository extends AbstractRepository
         return $updateMovieInfo;
     }
 
-    public function destroy($id): array
+    public function destroy(int $id): array
     {
         if($this->model->findOrFail($id) == null)
         {
