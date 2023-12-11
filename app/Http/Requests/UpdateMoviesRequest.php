@@ -22,7 +22,9 @@ class UpdateMoviesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'string',
+            'age_restriction' => 'in:0,10,13,16,18',
+            'tags' => 'exists:tags,id',
         ];
     }
 }

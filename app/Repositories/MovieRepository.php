@@ -2,7 +2,6 @@
 namespace App\Repositories;
 
 use App\Models\Movie;
-use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
 use Illuminate\Support\Facades\DB;
 
@@ -13,11 +12,6 @@ class MovieRepository extends AbstractRepository
     public function __construct(Movie $model)
     {
         parent::__construct($model);
-    }
-
-    public function getIndexResult()
-    {
-        //TODO Lógica do index.
     }
 
     public function store(array $data)
@@ -33,6 +27,23 @@ class MovieRepository extends AbstractRepository
             $result = $movie;
         });
         return $result;
+    }
+
+    public function update(int $id, array $data){
+        $updateMovieInfo = $this->model->findOrFail($id);
+        $updateMovieInfo->update($data);
+        return $updateMovieInfo;
+    }
+
+    public function destroy($id): array
+    {
+        if($this->model->findOrFail($id) == null)
+        {
+            return ['message' => 'The ID from this resource was not found in our DB'];
+        }
+        $deleteMovie = $this->model->find($id);
+        $deleteMovie->delete();
+        return ['message' => 'Resource deleted successfully'];
     }
 
     public function getVideoDuration($videoUrn): string

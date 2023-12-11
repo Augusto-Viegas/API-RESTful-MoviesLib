@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MovieResource;
 use App\Http\Requests\StoreMoviesRequest;
 use App\Http\Requests\UpdateMoviesRequest;
-use Illuminate\Http\Request;
 use Ramsey\Uuid\Type\Integer;
 use App\Repositories\MovieRepository;
 
@@ -25,7 +24,7 @@ class MovieController extends Controller
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $getAllResources = $this->movieRepository->
-        queryBuilder(['tags'],
+        queryBuilder(['tags','users'],
             ['name','age_restriction'],
             ['name','duration','age_restriction','file_size'],
         );
@@ -41,7 +40,7 @@ class MovieController extends Controller
         $file = $request->file('file');
         $fileUrn = $file->store('file', 'public');
 
-        //? Verificar o tamanho do arquivo
+        //? Verificar o tamanho do arquivo em bytes
         $fileSize = $request->file('file')->getSize();
 
         //? verifica a duração do video
@@ -69,14 +68,12 @@ class MovieController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param Integer $id
      */
-    public function update(UpdateMoviesRequest $request, $id)
+    public function update(int $id, UpdateMoviesRequest $request): MovieResource
     {
-        //TODO Refatorar o método de update para que PATCH seja diferenciado de PUT
-        $updateMovieInfo = $this->movie->find($id);
-        $updateMovieInfo->update($request->all());
-        return $updateMovieInfo;
+        $validatedData = $request->validated();
+        $resourceUpdate = $this->movieRepository->update($id, $validatedData);
+        return MovieResource::make($resourceUpdate);
     }
 
     /**
@@ -85,8 +82,6 @@ class MovieController extends Controller
      */
     public function destroy($id): array
     {
-        $deleteMovie = $this->movie->find($id);
-        $deleteMovie->delete();
-        return ['message' => 'O filme foi excluido com sucesso.'];
+        return $this->movieRepository->destroy($id);
     }
 }

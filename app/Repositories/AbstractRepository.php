@@ -6,7 +6,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 abstract class AbstractRepository
 {
-    protected $model;
+    protected Model $model;
     public function __construct(Model $model)
     {
         $this->model = $model;
@@ -38,4 +38,6 @@ abstract class AbstractRepository
     {
         return $this->model->find($id);
     }
+
+
 }

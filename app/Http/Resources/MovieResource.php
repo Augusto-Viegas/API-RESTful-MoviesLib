@@ -14,9 +14,9 @@ class MovieResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        //return parent::toArray($request);
         return [
             'user_id' => $this->user_id,
+            'id' => $this->id,
             'email' => UserResource::collection($this->whenLoaded('users')),
             'name' => $this->name,
             'age_restriction' => $this->age_restriction,
