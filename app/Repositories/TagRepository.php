@@ -28,13 +28,13 @@ class TagRepository extends AbstractRepository
         return $updateTagInfo;
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): array
     {
         if($this->model->findOrFail($id) == null)
         {
             return ['message' => 'The ID from this resource was not found in our DB'];
         }
-        $deleteMovie = $this->model->find($id);
+        $deleteMovie = $this->model->findOrFail($id);
         $deleteMovie->delete();
         return ['message' => 'Resource deleted successfully'];
     }

@@ -11,6 +11,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "pbmedia/laravel-ffmpeg": "^8.3",
+        "php-open-source-saver/jwt-auth": "^2.1",
         "spatie/laravel-query-builder": "^5.6"
     },
     "require-dev": {

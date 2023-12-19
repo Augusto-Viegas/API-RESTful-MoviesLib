@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 //#Controllers:
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +23,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('movies', MovieController::class);
-Route::apiResource('movieTags', TagController::class);
+Route::group(['prefix' => 'auth'], function(){
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::post('me', [AuthController::class, 'me']);
+});
+
+Route::middleware('auth.jwt')->group(function(){
+    Route::apiResource('movies', MovieController::class);
+    Route::apiResource('movieTags', TagController::class);
+});
+
