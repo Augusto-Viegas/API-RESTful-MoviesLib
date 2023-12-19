@@ -1,12 +1,7 @@
-This project allows you to:
+**Introduction:**
 
-1) Register a user
-2) Authentication on login
-3) Can upload a movie
-4) Can create and add tags to movies 
-5) List movies
-6) Edit movies details
-7) Delete movies
+This is an API RESTful project which allows users to upload movies. You can also select one or more category from which your
+movies belongs.
 
-----------------------------------------------------------------
+Obs.: More information about the endpoints and how it works will be add in the future. 
 
